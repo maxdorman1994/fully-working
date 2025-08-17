@@ -1,0 +1,94 @@
+{
+  "name": "A Wee Adventure - Family Scottish Adventures",
+  "short_name": "A Wee Adventure",
+  "description": "Follow our family adventures exploring Scotland's breathtaking landscapes, documenting our journeys, and creating lasting memories.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-GB",
+  "categories": ["travel", "lifestyle", "photo", "family"],
+  "icons": [
+    {
+      "src": "https://cdn.builder.io/api/v1/image/assets%2Fa83b3164f88441ffa1b74f47a94f3c3d%2F1f080612d23e43379e57f92b5020b490?format=webp&width=192",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn.builder.io/api/v1/image/assets%2Fa83b3164f88441ffa1b74f47a94f3c3d%2F1f080612d23e43379e57f92b5020b490?format=webp&width=512",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn.builder.io/api/v1/image/assets%2Fa83b3164f88441ffa1b74f47a94f3c3d%2F1f080612d23e43379e57f92b5020b490?format=webp&width=144",
+      "sizes": "144x144",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "https://cdn.builder.io/api/v1/image/assets%2Fa83b3164f88441ffa1b74f47a94f3c3d%2F1f080612d23e43379e57f92b5020b490?format=webp&width=72",
+      "sizes": "72x72",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://cdn.builder.io/api/v1/image/assets%2Fa83b3164f88441ffa1b74f47a94f3c3d%2F1f080612d23e43379e57f92b5020b490?format=webp&width=1280",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide"
+    },
+    {
+      "src": "https://cdn.builder.io/api/v1/image/assets%2Fa83b3164f88441ffa1b74f47a94f3c3d%2F1f080612d23e43379e57f92b5020b490?format=webp&width=750",
+      "sizes": "750x1334",
+      "type": "image/webp",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Journal",
+      "short_name": "Journal",
+      "description": "View our adventure journal entries",
+      "url": "/journal",
+      "icons": [
+        {
+          "src": "https://cdn.builder.io/api/v1/image/assets%2Fa83b3164f88441ffa1b74f47a94f3c3d%2F1f080612d23e43379e57f92b5020b490?format=webp&width=96",
+          "sizes": "96x96",
+          "type": "image/webp"
+        }
+      ]
+    },
+    {
+      "name": "Map",
+      "short_name": "Map",
+      "description": "Explore our adventure map",
+      "url": "/map",
+      "icons": [
+        {
+          "src": "https://cdn.builder.io/api/v1/image/assets%2Fa83b3164f88441ffa1b74f47a94f3c3d%2F1f080612d23e43379e57f92b5020b490?format=webp&width=96",
+          "sizes": "96x96",
+          "type": "image/webp"
+        }
+      ]
+    },
+    {
+      "name": "Gallery",
+      "short_name": "Gallery",
+      "description": "Browse our photo gallery",
+      "url": "/gallery",
+      "icons": [
+        {
+          "src": "https://cdn.builder.io/api/v1/image/assets%2Fa83b3164f88441ffa1b74f47a94f3c3d%2F1f080612d23e43379e57f92b5020b490?format=webp&width=96",
+          "sizes": "96x96",
+          "type": "image/webp"
+        }
+      ]
+    }
+  ]
+}
