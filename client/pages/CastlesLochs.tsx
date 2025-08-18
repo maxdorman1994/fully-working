@@ -541,59 +541,7 @@ export default function CastlesLochs() {
               and 30 incredible hidden gems
             </p>
 
-            {/* Error Display */}
-            {error && (
-              <div className="mb-8 max-w-3xl mx-auto">
-                <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-6 text-amber-800 shadow-lg">
-                  <div className="flex items-center justify-center mb-3">
-                    <AlertCircle className="h-6 w-6 mr-2" />
-                    <span className="font-semibold">System Status</span>
-                  </div>
-                  <p className="text-sm text-center leading-relaxed mb-4">
-                    {error}
-                  </p>
-
-                  {error.includes("Database Setup Required") && (
-                    <div className="bg-white/50 rounded-xl p-4 mb-4 text-xs">
-                      <div className="font-semibold mb-2">
-                        📋 Setup Instructions:
-                      </div>
-                      <ol className="list-decimal list-inside space-y-1 text-amber-700">
-                        <li>Go to your Supabase Dashboard → SQL Editor</li>
-                        <li>
-                          Create a new query and copy the Castles & Lochs SQL
-                          schema
-                        </li>
-                        <li>
-                          Run the schema to create tables with 100 castles and
-                          20 lochs
-                        </li>
-                        <li>Refresh this page to enable cross-device sync</li>
-                      </ol>
-                    </div>
-                  )}
-
-                  <div className="flex gap-2 justify-center">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={testConnection}
-                      className="border-amber-300 text-amber-700 hover:bg-amber-100"
-                    >
-                      Test Connection
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={loadData}
-                      className="border-amber-300 text-amber-700 hover:bg-amber-100"
-                    >
-                      Retry Load
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
+           
 
             {/* Tabs for Castles and Lochs */}
             <Tabs
