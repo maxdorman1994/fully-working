@@ -485,18 +485,17 @@ export async function getLochVisitStats(): Promise<{
     recommended_count: 0,
   };
 
-  if (!isSupabaseConfigured()) {
-    console.warn("Supabase not configured, returning default loch stats");
+  if (!isHasuraConfigured()) {
+    console.warn("Hasura not configured, returning default loch stats");
     return defaultStats;
   }
 
   try {
     console.log("📊 Fetching loch visit statistics...");
 
-    const { data, error } = await supabase
-      .from("loch_visit_stats")
-      .select("*")
-      .single();
+    // TODO: Implement with Hasura GraphQL
+    console.warn("Loch stats temporarily disabled - using defaults");
+    return defaultStats;
 
     if (error) {
       console.error("Error fetching loch stats:", error);
