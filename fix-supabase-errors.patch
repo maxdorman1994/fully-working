@@ -1,0 +1,25 @@
+// Quick fix for Supabase errors
+// This file contains the functions that need to be temporarily disabled
+
+// For now, let's create a simple config to disable problematic services
+export const DISABLE_PROBLEMATIC_SERVICES = true;
+
+// Add this to the top of services that are causing issues:
+// if (DISABLE_PROBLEMATIC_SERVICES) {
+//   console.warn("Service temporarily disabled to prevent Supabase errors");
+//   return defaultValue;
+// }
+
+// Services that need fixing:
+// 1. client/lib/castlesLochsService.ts - ✅ PARTIALLY FIXED (main functions updated to Hasura)
+// 2. client/lib/journalCommentsService.ts - ❌ Still using Supabase  
+// 3. client/lib/milestoneTracker.ts - ❌ Still using Supabase
+// 4. client/lib/appSettingsService.ts - ❌ Still using Supabase
+// 5. client/lib/syncService.ts - ❌ Still using Supabase
+// 6. client/lib/realMilestonesService.ts - ❌ Still using Supabase
+// 7. client/lib/homePageSyncService.ts - ❌ Still using Supabase
+
+// Priority:
+// HIGH: Disable the ones causing immediate errors
+// MEDIUM: Update to use Hasura GraphQL where possible
+// LOW: Remove unused Supabase services entirely
