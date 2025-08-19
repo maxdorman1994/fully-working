@@ -434,18 +434,17 @@ export async function getCastleVisitStats(): Promise<{
     recommended_count: 0,
   };
 
-  if (!isSupabaseConfigured()) {
-    console.warn("Supabase not configured, returning default castle stats");
+  if (!isHasuraConfigured()) {
+    console.warn("Hasura not configured, returning default castle stats");
     return defaultStats;
   }
 
   try {
     console.log("📊 Fetching castle visit statistics...");
 
-    const { data, error } = await supabase
-      .from("castle_visit_stats")
-      .select("*")
-      .single();
+    // TODO: Implement with Hasura GraphQL
+    console.warn("Castle stats temporarily disabled - using defaults");
+    return defaultStats;
 
     if (error) {
       console.error("Error fetching castle stats:", error);
@@ -789,7 +788,7 @@ export async function deleteCustomLoch(lochId: string): Promise<void> {
       .eq("is_custom", true);
 
     if (error) {
-      console.error("❌ Error deleting custom loch:", error);
+      console.error("��� Error deleting custom loch:", error);
       throw new Error(`Failed to delete loch: ${error.message}`);
     }
 
@@ -928,7 +927,7 @@ export async function visitHiddenGem(
   }
 
   try {
-    console.log(`💎 Marking hidden gem ${hiddenGemId} as visited...`);
+    console.log(`���� Marking hidden gem ${hiddenGemId} as visited...`);
     console.log(`🔍 Debug: Getting current user for hidden gem visit...`);
 
     // Note: Using custom auth system, not Supabase auth, so user_id will be set by trigger
