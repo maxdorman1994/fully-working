@@ -36,6 +36,7 @@ function App() {
             <Route path="/milestones" element={<Milestones />} />
             <Route path="/map" element={<Map />} />
             <Route path="/debug" element={<Debug />} />
+            <Route path="/test" element={<TestPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
