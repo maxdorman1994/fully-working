@@ -324,40 +324,7 @@ export default function MapPage() {
           ))}
         </div>
 
-        {/* Info Banner */}
-        <div className="flex justify-center mb-6 gap-4">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 flex items-center gap-2 text-sm text-blue-700">
-            <Info className="w-4 h-4" />
-            <span>
-              {isAuthenticated
-                ? "Interactive map powered by Mapbox - Click to add pins, drag to explore Scotland!"
-                : "Interactive map powered by Mapbox - Login in footer to add pins and edit adventures"}
-            </span>
-          </div>
-
-          {/* Sync Status */}
-          <div
-            className={`rounded-lg px-4 py-2 flex items-center gap-2 text-sm ${
-              isOnline
-                ? "bg-green-50 border border-green-200 text-green-700"
-                : "bg-red-50 border border-red-200 text-red-700"
-            }`}
-          >
-            {isOnline ? (
-              <Wifi className="w-4 h-4" />
-            ) : (
-              <WifiOff className="w-4 h-4" />
-            )}
-            <span>
-              {isLoading
-                ? "Loading pins..."
-                : isOnline
-                  ? `${pins.length} pins synced`
-                  : "Offline mode"}
-            </span>
-          </div>
-        </div>
-      </div>
+      
 
       {/* Stats Section */}
       <div className="mb-8">
