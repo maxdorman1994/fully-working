@@ -775,14 +775,14 @@ export default function MapPage() {
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-4">
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={editingPin ? handleUpdatePin : handleAddPin}>
-                {editingPin ? "Update Pin" : "Add Pin"}
-              </Button>
-            </div>
+      <div className="flex justify-end gap-2 pt-4">
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={editingPin ? handleUpdatePin : handleAddPin}>
+              {editingPin ? "Update Pin" : "Add Pin"}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
