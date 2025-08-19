@@ -2,8 +2,10 @@ import { RequestHandler } from "express";
 import { GraphQLClient } from "graphql-request";
 
 // Hasura configuration - use server-side environment variables
-const hasuraUrl = process.env.HASURA_GRAPHQL_URL || process.env.VITE_HASURA_GRAPHQL_URL || "";
-const hasuraAdminSecret = process.env.HASURA_ADMIN_SECRET || process.env.VITE_HASURA_ADMIN_SECRET || "";
+const hasuraUrl =
+  process.env.HASURA_GRAPHQL_URL || process.env.VITE_HASURA_GRAPHQL_URL || "";
+const hasuraAdminSecret =
+  process.env.HASURA_ADMIN_SECRET || process.env.VITE_HASURA_ADMIN_SECRET || "";
 
 // Create Hasura GraphQL client for server-side requests
 const hasuraClient = new GraphQLClient(hasuraUrl, {
@@ -27,7 +29,10 @@ export const handleGraphQLProxy: RequestHandler = async (req, res) => {
   // Set CORS headers for GraphQL requests
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, x-hasura-admin-secret");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, x-hasura-admin-secret",
+  );
 
   // Handle preflight requests
   if (req.method === "OPTIONS") {
@@ -37,7 +42,9 @@ export const handleGraphQLProxy: RequestHandler = async (req, res) => {
 
   // Only allow POST requests for GraphQL
   if (req.method !== "POST") {
-    res.status(405).json({ error: "Method not allowed. Use POST for GraphQL requests." });
+    res
+      .status(405)
+      .json({ error: "Method not allowed. Use POST for GraphQL requests." });
     return;
   }
 
@@ -45,7 +52,8 @@ export const handleGraphQLProxy: RequestHandler = async (req, res) => {
   if (!hasuraUrl) {
     res.status(500).json({
       error: "Hasura not configured",
-      message: "Please set HASURA_GRAPHQL_URL or VITE_HASURA_GRAPHQL_URL environment variable",
+      message:
+        "Please set HASURA_GRAPHQL_URL or VITE_HASURA_GRAPHQL_URL environment variable",
     });
     return;
   }
@@ -70,12 +78,13 @@ export const handleGraphQLProxy: RequestHandler = async (req, res) => {
     res.json(result);
   } catch (error) {
     console.error("❌ GraphQL proxy error:", error);
-    
+
     if (error instanceof Error) {
       res.status(500).json({
         error: "GraphQL request failed",
         message: error.message,
-        details: process.env.NODE_ENV === "development" ? error.stack : undefined,
+        details:
+          process.env.NODE_ENV === "development" ? error.stack : undefined,
       });
     } else {
       res.status(500).json({

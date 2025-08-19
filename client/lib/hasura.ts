@@ -5,8 +5,10 @@ const directHasuraUrl = import.meta.env.VITE_HASURA_GRAPHQL_URL || "";
 const hasuraAdminSecret = import.meta.env.VITE_HASURA_ADMIN_SECRET || "";
 
 // Use proxy endpoint for production to avoid CORS issues
-const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-const hasuraUrl = isProduction ? '/api/graphql' : directHasuraUrl;
+const isProduction =
+  window.location.hostname !== "localhost" &&
+  window.location.hostname !== "127.0.0.1";
+const hasuraUrl = isProduction ? "/api/graphql" : directHasuraUrl;
 
 console.log("🔧 Hasura Configuration Check:", {
   isProduction,
@@ -29,11 +31,12 @@ if (!isProduction && !directHasuraUrl) {
 
 // Create Hasura GraphQL client
 export const hasuraClient = new GraphQLClient(hasuraUrl, {
-  headers: hasuraAdminSecret && !isProduction
-    ? {
-        "x-hasura-admin-secret": hasuraAdminSecret,
-      }
-    : {},
+  headers:
+    hasuraAdminSecret && !isProduction
+      ? {
+          "x-hasura-admin-secret": hasuraAdminSecret,
+        }
+      : {},
 });
 
 // Database types for Hasura tables (same as before)
