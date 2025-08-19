@@ -323,9 +323,9 @@ export default function MapPage() {
             </Badge>
           ))}
         </div>
-
-      
-
+          );
+        }
+    
       {/* Stats Section */}
       <div className="mb-8">
         <h2 className="text-2xl font-semibold mb-4 text-center">
