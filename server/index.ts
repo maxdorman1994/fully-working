@@ -12,6 +12,7 @@ import {
   listPhotos,
   deletePhoto,
 } from "./routes/photos";
+import { handleGraphQLProxy } from "./routes/graphql-proxy";
 import { logR2Status, getR2Status } from "./utils/r2Config";
 
 // Fix for serverless environments where import.meta.url might be undefined
@@ -40,6 +41,10 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // GraphQL proxy route (handles CORS for Hasura requests)
+  app.post("/api/graphql", handleGraphQLProxy);
+  app.options("/api/graphql", handleGraphQLProxy);
 
   // Photo upload routes
   app.post("/api/photos/upload", uploadPhotoMiddleware, uploadPhoto);

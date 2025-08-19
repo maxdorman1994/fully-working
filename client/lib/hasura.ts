@@ -1,32 +1,47 @@
 import { GraphQLClient } from "graphql-request";
 
 // Hasura configuration
-const hasuraUrl = import.meta.env.VITE_HASURA_GRAPHQL_URL || "";
+const directHasuraUrl = import.meta.env.VITE_HASURA_GRAPHQL_URL || "";
 const hasuraAdminSecret = import.meta.env.VITE_HASURA_ADMIN_SECRET || "";
 
+// Use proxy endpoint for production to avoid CORS issues
+const isProduction =
+  window.location.hostname === "dormanjournal.co.uk" ||
+  (window.location.hostname !== "localhost" &&
+    window.location.hostname !== "127.0.0.1" &&
+    !window.location.hostname.includes("localhost") &&
+    !window.location.hostname.includes("192.168") &&
+    !window.location.hostname.includes("172.") &&
+    !window.location.hostname.includes("10."));
+const hasuraUrl = isProduction ? "/api/graphql" : directHasuraUrl;
+
 console.log("🔧 Hasura Configuration Check:", {
-  hasUrl: !!hasuraUrl,
+  isProduction,
+  usingProxy: isProduction,
+  hasDirectUrl: !!directHasuraUrl,
   hasSecret: !!hasuraAdminSecret,
-  urlFormat: hasuraUrl
-    ? hasuraUrl.startsWith("https://")
+  finalUrl: hasuraUrl,
+  urlFormat: directHasuraUrl
+    ? directHasuraUrl.startsWith("https://")
       ? "Valid HTTPS URL"
       : "Invalid URL format"
     : "Missing",
 });
 
-if (!hasuraUrl) {
+if (!isProduction && !directHasuraUrl) {
   console.warn(
-    "⚠️  Hasura configuration missing. Please set VITE_HASURA_GRAPHQL_URL",
+    "⚠️  Hasura configuration missing for development. Please set VITE_HASURA_GRAPHQL_URL",
   );
 }
 
 // Create Hasura GraphQL client
 export const hasuraClient = new GraphQLClient(hasuraUrl, {
-  headers: hasuraAdminSecret
-    ? {
-        "x-hasura-admin-secret": hasuraAdminSecret,
-      }
-    : {},
+  headers:
+    hasuraAdminSecret && !isProduction
+      ? {
+          "x-hasura-admin-secret": hasuraAdminSecret,
+        }
+      : {},
 });
 
 // Database types for Hasura tables (same as before)
@@ -731,7 +746,12 @@ export const INSERT_CUSTOM_MUNRO = `
  * Check if Hasura is properly configured
  */
 export function isHasuraConfigured(): boolean {
-  return Boolean(hasuraUrl);
+  // In production, we always use the proxy, so it's configured if we can reach our own API
+  if (isProduction) {
+    return true;
+  }
+  // In development, we need the direct Hasura URL
+  return Boolean(directHasuraUrl);
 }
 
 /**
@@ -742,11 +762,19 @@ export function getHasuraStatus(): {
   message: string;
   url?: string;
 } {
-  if (!hasuraUrl) {
+  if (isProduction) {
+    return {
+      configured: true,
+      message: "Hasura configured via proxy endpoint",
+      url: "/api/graphql",
+    };
+  }
+
+  if (!directHasuraUrl) {
     return {
       configured: false,
       message:
-        "Hasura not configured. Please set VITE_HASURA_GRAPHQL_URL environment variable.",
+        "Hasura not configured for development. Please set VITE_HASURA_GRAPHQL_URL environment variable.",
     };
   }
 
