@@ -305,11 +305,6 @@ export default function MapPage() {
             Our Adventure Map
           </span>
         </h1>
-        <p className="text-center text-muted-foreground mb-6">
-          {isAuthenticated
-            ? "Click anywhere on the map to add a new pin for your Scottish adventures!"
-            : "Login in the footer to start adding pins for your Scottish adventures!"}
-        </p>
 
         {/* Category Legend */}
         <div className="flex flex-wrap justify-center gap-3 mb-6">
