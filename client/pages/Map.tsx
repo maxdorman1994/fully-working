@@ -239,3 +239,164 @@ export default function MapPage() {
                         setSelectedPin(pin);
                       }}
                     >
+                      <div
+                        className={`w-8 h-8 rounded-full ${categoryColors[pin.category]} border-3 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform`}
+                      >
+                        <MapPin className="w-4 h-4 text-white" />
+                      </div>
+                    </Marker>
+                  ))}
+
+                  {selectedPin && (
+                    <Popup
+                      latitude={selectedPin.latitude}
+                      longitude={selectedPin.longitude}
+                      anchor="top"
+                      onClose={() => setSelectedPin(null)}
+                      closeButton={true}
+                      closeOnClick={false}
+                    >
+                      <div className="p-3 min-w-[200px]">
+                        <Badge
+                          className={`${categoryColors[selectedPin.category]} text-white text-xs`}
+                        >
+                          {categoryLabels[selectedPin.category]}
+                        </Badge>
+                        <h3 className="font-semibold mt-1">{selectedPin.title}</h3>
+                        <p className="text-sm">{selectedPin.description}</p>
+                        {selectedPin.date && (
+                          <p className="text-xs mt-1 flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            {selectedPin.date}
+                          </p>
+                        )}
+                        {isAuthenticated && (
+                          <div className="flex justify-end gap-2 mt-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleEditPin(selectedPin)}
+                            >
+                              <Edit className="w-3 h-3" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => handleDeletePin(selectedPin.id)}
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    </Popup>
+                  )}
+                </ReactMapGL>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Stats Sidebar */}
+        <div className="lg:col-span-1 space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Map Stats</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Total Pins: {stats.total}</p>
+              <p>Adventure: {stats.byCategory.adventure}</p>
+              <p>Photo Spot: {stats.byCategory.photo}</p>
+              <p>Memory: {stats.byCategory.memory}</p>
+              <p>Wishlist: {stats.byCategory.wishlist}</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Add/Edit Pin Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{editingPin ? "Edit Pin" : "Add New Pin"}</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {selectedLocation && !editingPin && (
+              <div className="bg-muted/50 rounded-lg p-3 text-sm">
+                <strong>Location:</strong>{" "}
+                {selectedLocation.latitude.toFixed(4)},{" "}
+                {selectedLocation.longitude.toFixed(4)}
+              </div>
+            )}
+
+            <div>
+              <label className="text-sm font-medium">Title *</label>
+              <Input
+                value={newPin.title}
+                onChange={(e) =>
+                  setNewPin({ ...newPin, title: e.target.value })
+                }
+                placeholder="Enter pin title..."
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Description</label>
+              <Textarea
+                value={newPin.description}
+                onChange={(e) =>
+                  setNewPin({ ...newPin, description: e.target.value })
+                }
+                placeholder="Describe this location..."
+                className="mt-1"
+                rows={3}
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Category</label>
+              <select
+                value={newPin.category}
+                onChange={(e) =>
+                  setNewPin({
+                    ...newPin,
+                    category: e.target.value as MapPinType["category"],
+                  })
+                }
+                className="mt-1 w-full p-2 border border-border rounded-md bg-background"
+              >
+                <option value="adventure">Adventure</option>
+                <option value="photo">Photo Spot</option>
+                <option value="memory">Memory</option>
+                <option value="wishlist">Wishlist</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Date</label>
+              <Input
+                type="date"
+                value={newPin.date}
+                onChange={(e) =>
+                  setNewPin({ ...newPin, date: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4">
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={editingPin ? handleUpdatePin : handleAddPin}>
+                {editingPin ? "Update Pin" : "Add Pin"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
