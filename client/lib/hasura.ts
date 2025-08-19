@@ -738,7 +738,12 @@ export const INSERT_CUSTOM_MUNRO = `
  * Check if Hasura is properly configured
  */
 export function isHasuraConfigured(): boolean {
-  return Boolean(hasuraUrl);
+  // In production, we always use the proxy, so it's configured if we can reach our own API
+  if (isProduction) {
+    return true;
+  }
+  // In development, we need the direct Hasura URL
+  return Boolean(directHasuraUrl);
 }
 
 /**
@@ -749,11 +754,19 @@ export function getHasuraStatus(): {
   message: string;
   url?: string;
 } {
-  if (!hasuraUrl) {
+  if (isProduction) {
+    return {
+      configured: true,
+      message: "Hasura configured via proxy endpoint",
+      url: "/api/graphql",
+    };
+  }
+
+  if (!directHasuraUrl) {
     return {
       configured: false,
       message:
-        "Hasura not configured. Please set VITE_HASURA_GRAPHQL_URL environment variable.",
+        "Hasura not configured for development. Please set VITE_HASURA_GRAPHQL_URL environment variable.",
     };
   }
 
