@@ -18,6 +18,8 @@ import {
   Calendar,
   ExternalLink,
   Info,
+  Wifi,
+  WifiOff,
   Lock,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
@@ -52,6 +54,7 @@ const MAPBOX_TOKEN =
 export default function MapPage() {
   const [pins, setPins] = useState<MapPinType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [stats, setStats] = useState({
     total: 0,
     byCategory: {
@@ -88,7 +91,7 @@ export default function MapPage() {
     date: "",
   });
 
-  // Set up real-time sync
+  // Set up real-time sync and online status monitoring
   useEffect(() => {
     console.log("🗺️ Setting up map pins real-time sync...");
     setIsLoading(true);
@@ -113,10 +116,19 @@ export default function MapPage() {
       setIsLoading(false);
     });
 
+    // Monitor online status
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
     // Cleanup function
     return () => {
-      console.log("🗺️ Cleaning up map pins subscriptions");
+      console.log("����️ Cleaning up map pins subscriptions");
       unsubscribe();
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
