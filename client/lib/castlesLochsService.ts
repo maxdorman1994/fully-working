@@ -354,21 +354,20 @@ export async function visitLoch(data: CreateLochVisitData): Promise<LochVisit> {
  * Remove a castle visit (mark as not visited)
  */
 export async function unvisitCastle(castleId: string): Promise<void> {
-  if (!isSupabaseConfigured()) {
-    throw new Error("Supabase not configured");
+  if (!isHasuraConfigured()) {
+    throw new Error("Hasura not configured");
   }
 
   try {
     console.log(`🔄 Removing visit for castle ${castleId}...`);
 
-    const { error } = await supabase
-      .from("castle_visits")
-      .delete()
-      .eq("castle_id", castleId);
+    const response = await executeMutation<{ delete_castle_visits: { affected_rows: number } }>(
+      DELETE_CASTLE_VISIT,
+      { castle_id: castleId }
+    );
 
-    if (error) {
-      console.error("Error unvisiting castle:", error);
-      throw new Error(`Failed to unvisit castle: ${error.message}`);
+    if (response.delete_castle_visits.affected_rows === 0) {
+      console.warn(`No castle visit found to delete for ${castleId}`);
     }
 
     console.log(`✅ Castle visit removed: ${castleId}`);
@@ -385,21 +384,20 @@ export async function unvisitCastle(castleId: string): Promise<void> {
  * Remove a loch visit (mark as not visited)
  */
 export async function unvisitLoch(lochId: string): Promise<void> {
-  if (!isSupabaseConfigured()) {
-    throw new Error("Supabase not configured");
+  if (!isHasuraConfigured()) {
+    throw new Error("Hasura not configured");
   }
 
   try {
     console.log(`🔄 Removing visit for loch ${lochId}...`);
 
-    const { error } = await supabase
-      .from("loch_visits")
-      .delete()
-      .eq("loch_id", lochId);
+    const response = await executeMutation<{ delete_loch_visits: { affected_rows: number } }>(
+      DELETE_LOCH_VISIT,
+      { loch_id: lochId }
+    );
 
-    if (error) {
-      console.error("Error unvisiting loch:", error);
-      throw new Error(`Failed to unvisit loch: ${error.message}`);
+    if (response.delete_loch_visits.affected_rows === 0) {
+      console.warn(`No loch visit found to delete for ${lochId}`);
     }
 
     console.log(`✅ Loch visit removed: ${lochId}`);
