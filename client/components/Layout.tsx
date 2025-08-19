@@ -236,9 +236,8 @@ export default function Layout({ children }: LayoutProps) {
               ))}
             </nav>
 
-            {/* Sync Status, PWA, Theme Toggle & Mobile Menu Button */}
+            {/* PWA, Theme Toggle & Mobile Menu Button */}
             <div className="flex items-center space-x-4">
-              <SyncStatus />
               <PWAInstaller />
 
               <Button
