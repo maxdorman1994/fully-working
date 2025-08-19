@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Sun, Moon, Edit, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AuthFooter from "./AuthFooter";
 import PWAInstaller from "./PWAInstaller";
-import SyncStatus from "./SyncStatus";
 import RefreshHelper from "./RefreshHelper";
 import { useAuth } from "@/hooks/useAuth";
 import { useSync } from "@/lib/syncService";
@@ -236,9 +234,8 @@ export default function Layout({ children }: LayoutProps) {
               ))}
             </nav>
 
-            {/* Sync Status, PWA, Theme Toggle & Mobile Menu Button */}
+            {/* PWA, Theme Toggle & Mobile Menu Button */}
             <div className="flex items-center space-x-4">
-              <SyncStatus />
               <PWAInstaller />
 
               <Button

@@ -269,8 +269,8 @@ export async function getAllLochsWithVisits(): Promise<LochWithVisit[]> {
 export async function visitCastle(
   data: CreateCastleVisitData,
 ): Promise<CastleVisit> {
-  if (!isSupabaseConfigured()) {
-    throw new Error("Supabase not configured");
+  if (!isHasuraConfigured()) {
+    throw new Error("Hasura not configured");
   }
 
   try {
@@ -287,22 +287,16 @@ export async function visitCastle(
       would_recommend: data.would_recommend ?? true,
     };
 
-    const { data: visit, error } = await supabase
-      .from("castle_visits")
-      .upsert(visitData, {
-        onConflict: "castle_id",
-        ignoreDuplicates: false,
-      })
-      .select()
-      .single();
+    const response = await executeMutation<{
+      insert_castle_visits_one: CastleVisit;
+    }>(INSERT_CASTLE_VISIT, { visit: visitData });
 
-    if (error) {
-      console.error("Error visiting castle:", error);
-      throw new Error(`Failed to visit castle: ${error.message}`);
+    if (!response.insert_castle_visits_one) {
+      throw new Error("Failed to insert castle visit");
     }
 
     console.log(`✅ Castle visited successfully: ${data.castle_id}`);
-    return visit;
+    return response.insert_castle_visits_one;
   } catch (error) {
     console.error("Error in visitCastle:", error);
     if (error instanceof Error) {
@@ -316,8 +310,8 @@ export async function visitCastle(
  * Mark a loch as visited
  */
 export async function visitLoch(data: CreateLochVisitData): Promise<LochVisit> {
-  if (!isSupabaseConfigured()) {
-    throw new Error("Supabase not configured");
+  if (!isHasuraConfigured()) {
+    throw new Error("Hasura not configured");
   }
 
   try {
@@ -335,22 +329,16 @@ export async function visitLoch(data: CreateLochVisitData): Promise<LochVisit> {
       would_recommend: data.would_recommend ?? true,
     };
 
-    const { data: visit, error } = await supabase
-      .from("loch_visits")
-      .upsert(visitData, {
-        onConflict: "loch_id",
-        ignoreDuplicates: false,
-      })
-      .select()
-      .single();
+    const response = await executeMutation<{
+      insert_loch_visits_one: LochVisit;
+    }>(INSERT_LOCH_VISIT, { visit: visitData });
 
-    if (error) {
-      console.error("Error visiting loch:", error);
-      throw new Error(`Failed to visit loch: ${error.message}`);
+    if (!response.insert_loch_visits_one) {
+      throw new Error("Failed to insert loch visit");
     }
 
     console.log(`✅ Loch visited successfully: ${data.loch_id}`);
-    return visit;
+    return response.insert_loch_visits_one;
   } catch (error) {
     console.error("Error in visitLoch:", error);
     if (error instanceof Error) {
@@ -364,21 +352,19 @@ export async function visitLoch(data: CreateLochVisitData): Promise<LochVisit> {
  * Remove a castle visit (mark as not visited)
  */
 export async function unvisitCastle(castleId: string): Promise<void> {
-  if (!isSupabaseConfigured()) {
-    throw new Error("Supabase not configured");
+  if (!isHasuraConfigured()) {
+    throw new Error("Hasura not configured");
   }
 
   try {
     console.log(`🔄 Removing visit for castle ${castleId}...`);
 
-    const { error } = await supabase
-      .from("castle_visits")
-      .delete()
-      .eq("castle_id", castleId);
+    const response = await executeMutation<{
+      delete_castle_visits: { affected_rows: number };
+    }>(DELETE_CASTLE_VISIT, { castle_id: castleId });
 
-    if (error) {
-      console.error("Error unvisiting castle:", error);
-      throw new Error(`Failed to unvisit castle: ${error.message}`);
+    if (response.delete_castle_visits.affected_rows === 0) {
+      console.warn(`No castle visit found to delete for ${castleId}`);
     }
 
     console.log(`✅ Castle visit removed: ${castleId}`);
@@ -395,21 +381,19 @@ export async function unvisitCastle(castleId: string): Promise<void> {
  * Remove a loch visit (mark as not visited)
  */
 export async function unvisitLoch(lochId: string): Promise<void> {
-  if (!isSupabaseConfigured()) {
-    throw new Error("Supabase not configured");
+  if (!isHasuraConfigured()) {
+    throw new Error("Hasura not configured");
   }
 
   try {
     console.log(`🔄 Removing visit for loch ${lochId}...`);
 
-    const { error } = await supabase
-      .from("loch_visits")
-      .delete()
-      .eq("loch_id", lochId);
+    const response = await executeMutation<{
+      delete_loch_visits: { affected_rows: number };
+    }>(DELETE_LOCH_VISIT, { loch_id: lochId });
 
-    if (error) {
-      console.error("Error unvisiting loch:", error);
-      throw new Error(`Failed to unvisit loch: ${error.message}`);
+    if (response.delete_loch_visits.affected_rows === 0) {
+      console.warn(`No loch visit found to delete for ${lochId}`);
     }
 
     console.log(`✅ Loch visit removed: ${lochId}`);
@@ -446,18 +430,17 @@ export async function getCastleVisitStats(): Promise<{
     recommended_count: 0,
   };
 
-  if (!isSupabaseConfigured()) {
-    console.warn("Supabase not configured, returning default castle stats");
+  if (!isHasuraConfigured()) {
+    console.warn("Hasura not configured, returning default castle stats");
     return defaultStats;
   }
 
   try {
     console.log("📊 Fetching castle visit statistics...");
 
-    const { data, error } = await supabase
-      .from("castle_visit_stats")
-      .select("*")
-      .single();
+    // TODO: Implement with Hasura GraphQL
+    console.warn("Castle stats temporarily disabled - using defaults");
+    return defaultStats;
 
     if (error) {
       console.error("Error fetching castle stats:", error);
@@ -498,18 +481,17 @@ export async function getLochVisitStats(): Promise<{
     recommended_count: 0,
   };
 
-  if (!isSupabaseConfigured()) {
-    console.warn("Supabase not configured, returning default loch stats");
+  if (!isHasuraConfigured()) {
+    console.warn("Hasura not configured, returning default loch stats");
     return defaultStats;
   }
 
   try {
     console.log("📊 Fetching loch visit statistics...");
 
-    const { data, error } = await supabase
-      .from("loch_visit_stats")
-      .select("*")
-      .single();
+    // TODO: Implement with Hasura GraphQL
+    console.warn("Loch stats temporarily disabled - using defaults");
+    return defaultStats;
 
     if (error) {
       console.error("Error fetching loch stats:", error);
@@ -801,7 +783,7 @@ export async function deleteCustomLoch(lochId: string): Promise<void> {
       .eq("is_custom", true);
 
     if (error) {
-      console.error("❌ Error deleting custom loch:", error);
+      console.error("��� Error deleting custom loch:", error);
       throw new Error(`Failed to delete loch: ${error.message}`);
     }
 
@@ -940,7 +922,7 @@ export async function visitHiddenGem(
   }
 
   try {
-    console.log(`💎 Marking hidden gem ${hiddenGemId} as visited...`);
+    console.log(`���� Marking hidden gem ${hiddenGemId} as visited...`);
     console.log(`🔍 Debug: Getting current user for hidden gem visit...`);
 
     // Note: Using custom auth system, not Supabase auth, so user_id will be set by trigger
