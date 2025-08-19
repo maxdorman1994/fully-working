@@ -15,6 +15,7 @@ import Wishlist from "./pages/Wishlist";
 import Milestones from "./pages/Milestones";
 import Map from "./pages/Map";
 import Debug from "./pages/Debug";
+import TestPage from "./pages/TestPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
