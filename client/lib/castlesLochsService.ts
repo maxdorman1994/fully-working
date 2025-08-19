@@ -287,10 +287,9 @@ export async function visitCastle(
       would_recommend: data.would_recommend ?? true,
     };
 
-    const response = await executeMutation<{ insert_castle_visits_one: CastleVisit }>(
-      INSERT_CASTLE_VISIT,
-      { visit: visitData }
-    );
+    const response = await executeMutation<{
+      insert_castle_visits_one: CastleVisit;
+    }>(INSERT_CASTLE_VISIT, { visit: visitData });
 
     if (!response.insert_castle_visits_one) {
       throw new Error("Failed to insert castle visit");
@@ -330,10 +329,9 @@ export async function visitLoch(data: CreateLochVisitData): Promise<LochVisit> {
       would_recommend: data.would_recommend ?? true,
     };
 
-    const response = await executeMutation<{ insert_loch_visits_one: LochVisit }>(
-      INSERT_LOCH_VISIT,
-      { visit: visitData }
-    );
+    const response = await executeMutation<{
+      insert_loch_visits_one: LochVisit;
+    }>(INSERT_LOCH_VISIT, { visit: visitData });
 
     if (!response.insert_loch_visits_one) {
       throw new Error("Failed to insert loch visit");
@@ -361,10 +359,9 @@ export async function unvisitCastle(castleId: string): Promise<void> {
   try {
     console.log(`🔄 Removing visit for castle ${castleId}...`);
 
-    const response = await executeMutation<{ delete_castle_visits: { affected_rows: number } }>(
-      DELETE_CASTLE_VISIT,
-      { castle_id: castleId }
-    );
+    const response = await executeMutation<{
+      delete_castle_visits: { affected_rows: number };
+    }>(DELETE_CASTLE_VISIT, { castle_id: castleId });
 
     if (response.delete_castle_visits.affected_rows === 0) {
       console.warn(`No castle visit found to delete for ${castleId}`);
@@ -391,10 +388,9 @@ export async function unvisitLoch(lochId: string): Promise<void> {
   try {
     console.log(`🔄 Removing visit for loch ${lochId}...`);
 
-    const response = await executeMutation<{ delete_loch_visits: { affected_rows: number } }>(
-      DELETE_LOCH_VISIT,
-      { loch_id: lochId }
-    );
+    const response = await executeMutation<{
+      delete_loch_visits: { affected_rows: number };
+    }>(DELETE_LOCH_VISIT, { loch_id: lochId });
 
     if (response.delete_loch_visits.affected_rows === 0) {
       console.warn(`No loch visit found to delete for ${lochId}`);
