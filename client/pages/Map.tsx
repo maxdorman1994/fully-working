@@ -323,8 +323,7 @@ export default function MapPage() {
             </Badge>
           ))}
         </div>
-          );
-        }
+    
     
       {/* Stats Section */}
       <div className="mb-8">
