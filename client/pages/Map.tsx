@@ -705,86 +705,85 @@ export default function MapPage() {
         </div>
       </div>
 
-      {/* Add/Edit Pin Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{editingPin ? "Edit Pin" : "Add New Pin"}</DialogTitle>
-          </DialogHeader>
+    {/* Add/Edit Pin Dialog */}
+<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>{editingPin ? "Edit Pin" : "Add New Pin"}</DialogTitle>
+    </DialogHeader>
 
-          <div className="space-y-4">
-            {selectedLocation && !editingPin && (
-              <div className="bg-muted/50 rounded-lg p-3 text-sm">
-                <strong>Location:</strong>{" "}
-                {selectedLocation.latitude.toFixed(4)},{" "}
-                {selectedLocation.longitude.toFixed(4)}
-              </div>
-            )}
+    <div className="space-y-4">
+      {selectedLocation && !editingPin && (
+        <div className="bg-muted/50 rounded-lg p-3 text-sm">
+          <strong>Location:</strong>{" "}
+          {selectedLocation.latitude.toFixed(4)},{" "}
+          {selectedLocation.longitude.toFixed(4)}
+        </div>
+      )}
 
-            <div>
-              <label className="text-sm font-medium">Title *</label>
-              <Input
-                value={newPin.title}
-                onChange={(e) =>
-                  setNewPin({ ...newPin, title: e.target.value })
-                }
-                placeholder="Enter pin title..."
-                className="mt-1"
-              />
-            </div>
+      <div>
+        <label className="text-sm font-medium">Title *</label>
+        <Input
+          value={newPin.title}
+          onChange={(e) =>
+            setNewPin({ ...newPin, title: e.target.value })
+          }
+          placeholder="Enter pin title..."
+          className="mt-1"
+        />
+      </div>
 
-            <div>
-              <label className="text-sm font-medium">Description</label>
-              <Textarea
-                value={newPin.description}
-                onChange={(e) =>
-                  setNewPin({ ...newPin, description: e.target.value })
-                }
-                placeholder="Describe this location..."
-                className="mt-1"
-                rows={3}
-              />
-            </div>
+      <div>
+        <label className="text-sm font-medium">Description</label>
+        <Textarea
+          value={newPin.description}
+          onChange={(e) =>
+            setNewPin({ ...newPin, description: e.target.value })
+          }
+          placeholder="Describe this location..."
+          className="mt-1"
+          rows={3}
+        />
+      </div>
 
-            <div>
-              <label className="text-sm font-medium">Category</label>
-              <select
-                value={newPin.category}
-                onChange={(e) =>
-                  setNewPin({
-                    ...newPin,
-                    category: e.target.value as MapPin["category"],
-                  })
-                }
-                className="mt-1 w-full p-2 border border-border rounded-md bg-background"
-              >
-                <option value="adventure">Adventure</option>
-                <option value="photo">Photo Spot</option>
-                <option value="memory">Memory</option>
-                <option value="wishlist">Wishlist</option>
-              </select>
-            </div>
+      <div>
+        <label className="text-sm font-medium">Category</label>
+        <select
+          value={newPin.category}
+          onChange={(e) =>
+            setNewPin({
+              ...newPin,
+              category: e.target.value as MapPin["category"],
+            })
+          }
+          className="mt-1 w-full p-2 border border-border rounded-md bg-background"
+        >
+          <option value="adventure">Adventure</option>
+          <option value="photo">Photo Spot</option>
+          <option value="memory">Memory</option>
+          <option value="wishlist">Wishlist</option>
+        </select>
+      </div>
 
-            <div>
-              <label className="text-sm font-medium">Date</label>
-              <Input
-                type="date"
-                value={newPin.date}
-                onChange={(e) => setNewPin({ ...newPin, date: e.target.value })}
-                className="mt-1"
-              />
-            </div>
+      <div>
+        <label className="text-sm font-medium">Date</label>
+        <Input
+          type="date"
+          value={newPin.date}
+          onChange={(e) => setNewPin({ ...newPin, date: e.target.value })}
+          className="mt-1"
+        />
+      </div>
 
       <div className="flex justify-end gap-2 pt-4">
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={editingPin ? handleUpdatePin : handleAddPin}>
-              {editingPin ? "Update Pin" : "Add Pin"}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-}
+        <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+          Cancel
+        </Button>
+        <Button onClick={editingPin ? handleUpdatePin : handleAddPin}>
+          {editingPin ? "Update Pin" : "Add Pin"}
+        </Button>
+      </div>
+    </div> {/* <-- Closing space-y-4 container */}
+
+  </DialogContent>
+</Dialog>
