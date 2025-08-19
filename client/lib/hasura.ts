@@ -1,28 +1,35 @@
 import { GraphQLClient } from "graphql-request";
 
 // Hasura configuration
-const hasuraUrl = import.meta.env.VITE_HASURA_GRAPHQL_URL || "";
+const directHasuraUrl = import.meta.env.VITE_HASURA_GRAPHQL_URL || "";
 const hasuraAdminSecret = import.meta.env.VITE_HASURA_ADMIN_SECRET || "";
 
+// Use proxy endpoint for production to avoid CORS issues
+const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+const hasuraUrl = isProduction ? '/api/graphql' : directHasuraUrl;
+
 console.log("🔧 Hasura Configuration Check:", {
-  hasUrl: !!hasuraUrl,
+  isProduction,
+  usingProxy: isProduction,
+  hasDirectUrl: !!directHasuraUrl,
   hasSecret: !!hasuraAdminSecret,
-  urlFormat: hasuraUrl
-    ? hasuraUrl.startsWith("https://")
+  finalUrl: hasuraUrl,
+  urlFormat: directHasuraUrl
+    ? directHasuraUrl.startsWith("https://")
       ? "Valid HTTPS URL"
       : "Invalid URL format"
     : "Missing",
 });
 
-if (!hasuraUrl) {
+if (!isProduction && !directHasuraUrl) {
   console.warn(
-    "⚠️  Hasura configuration missing. Please set VITE_HASURA_GRAPHQL_URL",
+    "⚠️  Hasura configuration missing for development. Please set VITE_HASURA_GRAPHQL_URL",
   );
 }
 
 // Create Hasura GraphQL client
 export const hasuraClient = new GraphQLClient(hasuraUrl, {
-  headers: hasuraAdminSecret
+  headers: hasuraAdminSecret && !isProduction
     ? {
         "x-hasura-admin-secret": hasuraAdminSecret,
       }
