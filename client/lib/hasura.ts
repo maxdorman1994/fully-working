@@ -8,11 +8,11 @@ const hasuraAdminSecret = import.meta.env.VITE_HASURA_ADMIN_SECRET || "";
 const isProduction =
   window.location.hostname === "dormanjournal.co.uk" ||
   (window.location.hostname !== "localhost" &&
-   window.location.hostname !== "127.0.0.1" &&
-   !window.location.hostname.includes("localhost") &&
-   !window.location.hostname.includes("192.168") &&
-   !window.location.hostname.includes("172.") &&
-   !window.location.hostname.includes("10."));
+    window.location.hostname !== "127.0.0.1" &&
+    !window.location.hostname.includes("localhost") &&
+    !window.location.hostname.includes("192.168") &&
+    !window.location.hostname.includes("172.") &&
+    !window.location.hostname.includes("10."));
 const hasuraUrl = isProduction ? "/api/graphql" : directHasuraUrl;
 
 console.log("🔧 Hasura Configuration Check:", {
