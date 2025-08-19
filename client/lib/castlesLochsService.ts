@@ -311,8 +311,8 @@ export async function visitCastle(
  * Mark a loch as visited
  */
 export async function visitLoch(data: CreateLochVisitData): Promise<LochVisit> {
-  if (!isSupabaseConfigured()) {
-    throw new Error("Supabase not configured");
+  if (!isHasuraConfigured()) {
+    throw new Error("Hasura not configured");
   }
 
   try {
@@ -330,22 +330,17 @@ export async function visitLoch(data: CreateLochVisitData): Promise<LochVisit> {
       would_recommend: data.would_recommend ?? true,
     };
 
-    const { data: visit, error } = await supabase
-      .from("loch_visits")
-      .upsert(visitData, {
-        onConflict: "loch_id",
-        ignoreDuplicates: false,
-      })
-      .select()
-      .single();
+    const response = await executeMutation<{ insert_loch_visits_one: LochVisit }>(
+      INSERT_LOCH_VISIT,
+      { visit: visitData }
+    );
 
-    if (error) {
-      console.error("Error visiting loch:", error);
-      throw new Error(`Failed to visit loch: ${error.message}`);
+    if (!response.insert_loch_visits_one) {
+      throw new Error("Failed to insert loch visit");
     }
 
     console.log(`✅ Loch visited successfully: ${data.loch_id}`);
-    return visit;
+    return response.insert_loch_visits_one;
   } catch (error) {
     console.error("Error in visitLoch:", error);
     if (error instanceof Error) {
